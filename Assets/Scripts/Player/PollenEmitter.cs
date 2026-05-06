@@ -10,8 +10,10 @@ namespace BalloonBloom.Player
     /// </summary>
     public sealed class PollenEmitter : MonoBehaviour
     {
+        [Header("Visual Particle Systems")]
+        [SerializeField] private ParticleSystem[] visualPollenSystems;
+
         [Header("Emission")]
-        [SerializeField] private ParticleSystem visualPollen;
         [SerializeField] private PollenParticle pollenParticlePrefab;
         [SerializeField] private Transform spawnPoint;
         [SerializeField] [Min(0.1f)] private float particlesPerSecond = 16f;
@@ -82,17 +84,29 @@ namespace BalloonBloom.Player
 
         private void SetVisualEmission(bool enabled)
         {
-            if (visualPollen == null)
+            if (visualPollenSystems == null || visualPollenSystems.Length == 0)
             {
                 return;
             }
 
-            var emission = visualPollen.emission;
-            emission.enabled = enabled;
-
-            if (enabled && !visualPollen.isPlaying)
+            for (var i = 0; i < visualPollenSystems.Length; i++)
             {
-                visualPollen.Play();
+                var ps = visualPollenSystems[i];
+                if (ps == null)
+                {
+                    continue;
+                }
+
+                var emission = ps.emission;
+                emission.enabled = enabled;
+
+                if (enabled)
+                {
+                    if (!ps.isPlaying)
+                    {
+                        ps.Play();
+                    }
+                }
             }
         }
     }

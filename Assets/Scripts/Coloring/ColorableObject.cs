@@ -15,6 +15,7 @@ namespace BalloonBloom.Coloring
         [Header("Reveal")]
         [SerializeField] [Range(0.01f, 2f)] private float alphaGainPerHit = 0.08f;
         [SerializeField] [Range(0.1f, 20f)] private float smoothSpeed = 7f;
+        [SerializeField] private bool fadeOutBlackWhiteLayer = true;
 
         private float _targetAlpha;
         private bool _isCompleted;
@@ -48,6 +49,7 @@ namespace BalloonBloom.Coloring
             var nextAlpha = Mathf.Lerp(current.a, _targetAlpha, 1f - Mathf.Exp(-smoothSpeed * Time.deltaTime));
             current.a = nextAlpha;
             colorRenderer.color = current;
+            UpdateBlackWhiteAlpha(nextAlpha);
 
             if (_isCompleted || LevelManager.Instance == null)
             {
@@ -63,13 +65,24 @@ namespace BalloonBloom.Coloring
 
         public void ApplyPollenHit(float intensity = 1f)
         {
-            Debug.Log($"ApplyPollenHit on {name}, targetAlpha={_targetAlpha}");
             if (colorRenderer == null)
             {
                 return;
             }
 
             _targetAlpha = Mathf.Clamp01(_targetAlpha + alphaGainPerHit * Mathf.Max(0.01f, intensity));
+        }
+
+        private void UpdateBlackWhiteAlpha(float colorAlpha)
+        {
+            if (!fadeOutBlackWhiteLayer || blackWhiteRenderer == null)
+            {
+                return;
+            }
+
+            var bwColor = blackWhiteRenderer.color;
+            bwColor.a = 1f - Mathf.Clamp01(colorAlpha);
+            blackWhiteRenderer.color = bwColor;
         }
 
         private void Reset()

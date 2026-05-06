@@ -163,3 +163,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hitIntensity: 0.2
   lifeTime: 2.5
+  auraPrefab: {fileID: 3382729434240473966, guid: fd13c2aa53d4a4d47b9f800587c03c45, type: 3}
+  auraScaleMultiplier: 1
