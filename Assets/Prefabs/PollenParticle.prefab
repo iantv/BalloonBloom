@@ -77,7 +77,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -164,4 +164,4 @@ MonoBehaviour:
   hitIntensity: 0.2
   lifeTime: 2.5
   auraPrefab: {fileID: 3382729434240473966, guid: fd13c2aa53d4a4d47b9f800587c03c45, type: 3}
-  auraScaleMultiplier: 1
+  auraScaleMultiplier: 1.35

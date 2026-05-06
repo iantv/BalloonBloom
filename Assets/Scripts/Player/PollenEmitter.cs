@@ -21,7 +21,10 @@ namespace BalloonBloom.Player
 
         [Header("Spawn Spread")]
         [SerializeField] [Min(0f)] private float horizontalSpread = 0.25f;
-        [SerializeField] [Min(0f)] private float initialDownwardSpeed = 1.5f;
+        [SerializeField] [Tooltip("Degrees from scene +X axis. -90 looks straight down, -110 tips slightly backwards.")]
+        [Range(-179f, 179f)] private float emissionAngleDegrees = -90f;
+        [SerializeField] [Tooltip("Initial speed along emission direction (magnitude).")]
+        [Min(0f)] private float initialDownwardSpeed = 1.5f;
 
         private PollenResource _resource;
         private float _spawnAccumulator;
@@ -67,7 +70,9 @@ namespace BalloonBloom.Player
                 var offsetX = Random.Range(-horizontalSpread, horizontalSpread);
                 var spawnPosition = spawnPoint.position + new Vector3(offsetX, 0f, 0f);
                 var droplet = Instantiate(pollenParticlePrefab, spawnPosition, Quaternion.identity);
-                droplet.Initialize(Vector2.down * initialDownwardSpeed);
+                var radians = emissionAngleDegrees * Mathf.Deg2Rad;
+                var direction = new Vector2(Mathf.Cos(radians), Mathf.Sin(radians));
+                droplet.Initialize(direction * initialDownwardSpeed);
             }
         }
 

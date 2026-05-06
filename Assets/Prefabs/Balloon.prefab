@@ -5018,6 +5018,7 @@ MonoBehaviour:
   particlesPerSecond: 16
   pollenCostPerSecond: 14
   horizontalSpread: 0.25
+  emissionAngleDegrees: -150
   initialDownwardSpeed: 1.5
 --- !u!1 &6501816892007826147
 GameObject:
