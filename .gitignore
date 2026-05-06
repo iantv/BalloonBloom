@@ -107,3 +107,7 @@ InitTestScene*.unity*
 
 # macOS Finder artifacts
 .DS_Store
+
+# Ignore optional TextMesh Pro sample content
+/Assets/TextMesh Pro/Examples & Extras.meta
+/Assets/TextMesh Pro/Examples & Extras/
