@@ -14,6 +14,9 @@ namespace BalloonBloom.World
         [SerializeField] private float spawnX = 12f;
         [SerializeField] private float despawnX = -14f;
         [SerializeField] [Min(0f)] private float houseScrollSpeed = 2f;
+        [Tooltip("World scroll speed used to convert spacing (units) to spawn delay (seconds). " +
+                 "Should match the actual world scroll speed even when houseScrollSpeed is 0.")]
+        [SerializeField] [Min(0.1f)] private float worldScrollSpeed = 1f;
         [SerializeField] private Vector2 scaleRange = new Vector2(0.85f, 1.25f);
 
         [Header("Spacing")]
@@ -92,8 +95,7 @@ namespace BalloonBloom.World
         private float SampleSpawnDelay()
         {
             var spacing = Random.Range(spacingRange.x, spacingRange.y);
-            var speed = Mathf.Max(0.1f, houseScrollSpeed);
-            return spacing / speed;
+            return spacing / worldScrollSpeed;
         }
 
         private void TrySpawnDecorationNear(Vector3 anchorPosition, float houseScale)

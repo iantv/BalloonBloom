@@ -44,13 +44,57 @@ namespace BalloonBloom.World
                 return;
             }
 
-            if (leftMost.position.x <= transform.position.x - tileWidth)
+            // Recycle when the RIGHT EDGE of the leftmost tile exits the left side of the camera.
+            var leftRightEdge = GetTileRightEdge(leftMost);
+            if (leftRightEdge > GetCameraLeftEdge())
             {
-                leftMost.position = new Vector3(
-                    rightMost.position.x + tileWidth,
-                    leftMost.position.y,
-                    leftMost.position.z);
+                return;
             }
+
+            // Place leftmost tile so its LEFT EDGE touches the RIGHT EDGE of rightmost tile.
+            var rightRightEdge = GetTileRightEdge(rightMost);
+            var leftHalfWidth  = GetTileHalfWidth(leftMost);
+
+            leftMost.position = new Vector3(
+                rightRightEdge + leftHalfWidth,
+                leftMost.position.y,
+                leftMost.position.z);
+        }
+
+        /// <summary>Right-most world X of a tile, using SpriteRenderer bounds when available.</summary>
+        private float GetTileRightEdge(Transform tile)
+        {
+            var sr = tile.GetComponent<SpriteRenderer>();
+            if (sr != null)
+            {
+                return sr.bounds.max.x;
+            }
+
+            return tile.position.x + tileWidth * 0.5f;
+        }
+
+        /// <summary>Half-width of a tile in world units, using SpriteRenderer bounds when available.</summary>
+        private float GetTileHalfWidth(Transform tile)
+        {
+            var sr = tile.GetComponent<SpriteRenderer>();
+            if (sr != null)
+            {
+                return sr.bounds.extents.x;
+            }
+
+            return tileWidth * 0.5f;
+        }
+
+        /// <summary>World X of the camera's left edge (falls back to anchor - tileWidth).</summary>
+        private float GetCameraLeftEdge()
+        {
+            var cam = Camera.main;
+            if (cam != null && cam.orthographic)
+            {
+                return cam.transform.position.x - cam.orthographicSize * cam.aspect;
+            }
+
+            return transform.position.x - tileWidth;
         }
 
         private Transform GetLeftMostTile()
